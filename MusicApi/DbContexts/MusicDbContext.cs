@@ -3,8 +3,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 using MusicApi.DTOs;
+using MusicApi.Extensions;
 
 namespace MusicApi.DbContexts
 {
@@ -76,6 +78,107 @@ namespace MusicApi.DbContexts
                 .WithOne(u => u.Follower)
                 .HasForeignKey(u => u.FollowerId)
                 .OnDelete(DeleteBehavior.NoAction);
+        }
+
+        private void AddTimeStamps()
+        {
+            foreach (EntityEntry<UserDTO> entry in ChangeTracker
+                .Entries<UserDTO>()
+                .Where(e => e.State == EntityState.Added))
+            {
+                entry.Property(e => e.JoinedAt).CurrentValue = DateTime.UtcNow;
+            }
+
+            foreach (EntityEntry<PlaylistDTO> entry in ChangeTracker
+                .Entries<PlaylistDTO>()
+                .Where(e => e.State == EntityState.Added))
+            {
+                entry.Property(e => e.CreatedAt).CurrentValue = DateTime.UtcNow;
+            }
+
+            foreach (EntityEntry<UserPlayedEntryDTO> entry in ChangeTracker
+                .Entries<UserPlayedEntryDTO>()
+                .Where(e => e.State == EntityState.Added))
+            {
+                entry.Property(e => e.PlayedAt).CurrentValue = DateTime.UtcNow;
+            }
+
+            foreach (EntityEntry<AlbumDTO> entry in ChangeTracker
+                .Entries<AlbumDTO>()
+                .Where(e => e.State == EntityState.Added))
+            {
+                entry.Property(e => e.AddedAt).CurrentValue = DateTime.UtcNow;
+            }
+
+            foreach (EntityEntry<SongDTO> entry in ChangeTracker
+                .Entries<SongDTO>()
+                .Where(e => e.State == EntityState.Added))
+            {
+                entry.Property(e => e.AddedAt).CurrentValue = DateTime.UtcNow;
+            }
+
+            foreach (EntityEntry<ArtistDTO> entry in ChangeTracker
+                .Entries<ArtistDTO>()
+                .Where(e => e.State == EntityState.Added))
+            {
+                entry.Property(e => e.AddedAt).CurrentValue = DateTime.UtcNow;
+            }
+
+            foreach (EntityEntry<GenreDTO> entry in ChangeTracker
+                .Entries<GenreDTO>()
+                .Where(e => e.State == EntityState.Added))
+            {
+                entry.Property(e => e.AddedAt).CurrentValue = DateTime.UtcNow;
+            }
+
+            foreach (EntityEntry<PlaylistSongDTO> entry in ChangeTracker
+                .Entries<PlaylistSongDTO>()
+                .Where(e => e.State == EntityState.Added))
+            {
+                entry.Property(e => e.AddedAt).CurrentValue = DateTime.UtcNow;
+            }
+
+            foreach (EntityEntry<UserFavouriteEntryDTO> entry in ChangeTracker
+                .Entries<UserFavouriteEntryDTO>()
+                .Where(e => e.State == EntityState.Added))
+            {
+                entry.Property(e => e.AddedAt).CurrentValue = DateTime.UtcNow;
+            }
+        }
+
+        public override int SaveChanges()
+        {
+            AddTimeStamps();
+
+            return base.SaveChanges();
+        }
+
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            AddTimeStamps();
+
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            AddTimeStamps();
+
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            AddTimeStamps();
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<UserDTO> FindUser(IHeaderDictionary headers)
+        {
+            string apiKey = headers.GetApiKey();
+
+            return await Users.SingleAsync(u => u.ApiKey == apiKey);
         }
     }
 }

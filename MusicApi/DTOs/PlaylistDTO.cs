@@ -20,8 +20,6 @@ namespace MusicApi.DTOs
 
         public DateTime CreatedAt { get; set; }
 
-        public DateTime ModifiedAt { get; set; }
-
         public Guid CreatorId { get; set; }
 
         public virtual UserDTO? Creator { get; set; } 

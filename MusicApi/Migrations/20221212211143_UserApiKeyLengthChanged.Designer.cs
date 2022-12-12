@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MusicApi.DbContexts;
 
@@ -11,9 +12,11 @@ using MusicApi.DbContexts;
 namespace MusicApi.Migrations
 {
     [DbContext(typeof(MusicDbContext))]
-    partial class MusicDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221212211143_UserApiKeyLengthChanged")]
+    partial class UserApiKeyLengthChanged
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,9 +162,6 @@ namespace MusicApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("AddedAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<Guid?>("GenreDTOId")
                         .HasColumnType("uniqueidentifier");
 
@@ -203,9 +203,6 @@ namespace MusicApi.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("AddedAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid?>("GenreDTOId")
                         .HasColumnType("uniqueidentifier");
@@ -261,9 +258,6 @@ namespace MusicApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("AddedAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(32)
@@ -292,6 +286,9 @@ namespace MusicApi.Migrations
 
                     b.Property<Guid?>("GenreDTOId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -330,9 +327,6 @@ namespace MusicApi.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("AddedAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid?>("AlbumId")
                         .HasColumnType("uniqueidentifier");
@@ -441,9 +435,6 @@ namespace MusicApi.Migrations
 
                     b.Property<int>("EntryType")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("AddedAt")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("UserId", "EntryId", "EntryType");
 

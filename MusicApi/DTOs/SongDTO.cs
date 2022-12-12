@@ -14,6 +14,8 @@ namespace MusicApi.DTOs
 
         public DateTime? ReleasedAt { get; set; }
 
+        public DateTime AddedAt { get; set; }
+
         public Guid? AlbumId { get; set; }
 
         public virtual AlbumDTO? Album { get; set; }

@@ -18,6 +18,8 @@ namespace MusicApi.DTOs
 
         public DateTime? ReleasedAt { get; set; }
 
+        public DateTime AddedAt { get; set; }
+
         public virtual ICollection<SongDTO>? Songs { get; set; }
 
         public virtual ICollection<ArtistDTO>? Artists { get; set; }

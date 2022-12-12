@@ -12,6 +12,8 @@ namespace MusicApi.DTOs
         [MaxLength(32)]
         public string? Name { get; set; }
 
+        public DateTime AddedAt { get; set; }
+
         public virtual ICollection<SongDTO>? Songs { get; set; }
 
         public virtual ICollection<AlbumDTO>? Albums { get; set; }
