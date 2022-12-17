@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
+using Newtonsoft.Json;
+
 namespace MusicApi.DTOs
 {
     public class SongDTO
@@ -18,10 +20,13 @@ namespace MusicApi.DTOs
 
         public Guid? AlbumId { get; set; }
 
+        [JsonIgnore]
         public virtual AlbumDTO? Album { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<ArtistDTO>? Artists { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<PlaylistDTO>? Playlists { get; set; }
     }
 }

@@ -54,6 +54,7 @@ builder.Services.AddAuthentication(ApiKeyDefaults.AuthenticationScheme)
     .AddScheme<AuthenticationSchemeOptions, ApiKeyAuthenticationHandler>(ApiKeyDefaults.AuthenticationScheme, null);
 
 builder.Services.AddScoped<IApiKeyService, ApiKeyService>();
+builder.Services.AddSingleton<ISongFileManager, SongFileManager>();
 
 var app = builder.Build();
 
