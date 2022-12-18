@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
+using MusicApi.Models;
+
 namespace MusicApi.DTOs
 {
     public class GenreDTO
@@ -14,12 +16,16 @@ namespace MusicApi.DTOs
 
         public DateTime AddedAt { get; set; }
 
-        public virtual ICollection<SongDTO>? Songs { get; set; }
+        public GenreDTO() { }
 
-        public virtual ICollection<AlbumDTO>? Albums { get; set; }
+        public GenreDTO(AddGenre genre)
+        {
+            Patch(genre);
+        }
 
-        public virtual ICollection<ArtistDTO>? Artists { get; set; }
-
-        public virtual ICollection<PlaylistDTO>? Playlists { get; set; }
+        public void Patch(AddGenre genre)
+        {
+            Name = genre.Name;
+        }
     }
 }

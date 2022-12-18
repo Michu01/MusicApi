@@ -3,6 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.AspNetCore.Identity;
 
+using Newtonsoft.Json;
+
 namespace MusicApi.DTOs
 {
     public class UserDTO : IdentityUser<Guid>
@@ -14,12 +16,16 @@ namespace MusicApi.DTOs
 
         public DateTime JoinedAt { get; set; }
 
-        public virtual ICollection<UserFavouriteEntryDTO>? FavouriteEntries { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<UserFavouriteEntryDTO> FavouriteEntries { get; set; } = new List<UserFavouriteEntryDTO>();
 
-        public virtual ICollection<UserPlayedEntryDTO>? RecentlyPlayed { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<UserPlayedEntryDTO> RecentlyPlayed { get; set; } = new List<UserPlayedEntryDTO>();
 
-        public virtual ICollection<PlaylistDTO>? Playlists { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<PlaylistDTO> Playlists { get; set; } = new List<PlaylistDTO>();
 
-        public virtual ICollection<UserFollowDTO>? UserFollows { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<UserFollowDTO> UserFollows { get; set; } = new List<UserFollowDTO>();
     }
 }

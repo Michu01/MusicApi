@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text.Json.Serialization;
+
+using Microsoft.EntityFrameworkCore;
 
 using MusicApi.Enums;
+using MusicApi.Models;
 
 namespace MusicApi.DTOs
 {
@@ -9,10 +12,20 @@ namespace MusicApi.DTOs
     {
         public Guid EntryId { get; set; }
 
-        public EntryType EntryType { get; set; }
+        public GenreEntryType EntryType { get; set; }
 
         public Guid GenreId { get; set; }
 
+        [JsonIgnore]
         public virtual GenreDTO? Genre { get; set; }
+
+        public EntryGenreDTO() { }
+
+        public EntryGenreDTO(EntryGenre entryGenre)
+        {
+            EntryId = entryGenre.EntryId;
+            EntryType = entryGenre.EntryType;
+            GenreId = entryGenre.GenreId;
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace MusicApi.DTOs
 
         public Guid EntryId { get; set; }
 
-        public EntryType EntryType { get; set; }
+        public PlayedEntryType EntryType { get; set; }
 
         public DateTime PlayedAt { get; set; }
     }

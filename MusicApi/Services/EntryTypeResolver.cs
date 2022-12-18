@@ -15,7 +15,7 @@ namespace MusicApi.Services
                 SongDTO => EntryType.Song,
                 PlaylistDTO => EntryType.Playlist,
                 GenreDTO => EntryType.Genre,
-                _ => throw new ArgumentException()
+                _ => throw new ArgumentException("Invalid object type", nameof(o))
             };
         }
     }

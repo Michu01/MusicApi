@@ -1,5 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
+
+using MusicApi.Models;
 
 namespace MusicApi.DTOs
 {
@@ -14,8 +17,22 @@ namespace MusicApi.DTOs
 
         public DateTime AddedAt { get; set; }
 
-        public virtual ICollection<SongDTO>? Songs { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<SongDTO> Songs { get; set; } = new List<SongDTO>();
 
-        public virtual ICollection<AlbumDTO>? Albums { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<AlbumDTO> Albums { get; set; } = new List<AlbumDTO>();
+
+        public ArtistDTO() { }
+
+        public ArtistDTO(AddArtist artist)
+        {
+            Patch(artist);
+        }
+
+        public void Patch(AddArtist artist)
+        {
+            Name = artist.Name;
+        }
     }
 }

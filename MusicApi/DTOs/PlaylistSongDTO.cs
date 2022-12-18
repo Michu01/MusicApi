@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -9,10 +10,12 @@ namespace MusicApi.DTOs
     {
         public Guid PlaylistId { get; set; }
 
+        [JsonIgnore]
         public virtual PlaylistDTO? Playlist { get; set; }
 
         public Guid SongId { get; set; }
 
+        [JsonIgnore]
         public virtual SongDTO? Song { get; set; }
 
         public DateTime AddedAt { get; set; }

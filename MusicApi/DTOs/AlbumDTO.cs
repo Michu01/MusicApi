@@ -1,7 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
+
+using Microsoft.Identity.Client;
 
 using MusicApi.Enums;
+using MusicApi.Models;
 
 namespace MusicApi.DTOs
 {
@@ -20,8 +24,24 @@ namespace MusicApi.DTOs
 
         public DateTime AddedAt { get; set; }
 
-        public virtual ICollection<SongDTO>? Songs { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<SongDTO> Songs { get; set; } = new List<SongDTO>();
 
-        public virtual ICollection<ArtistDTO>? Artists { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<ArtistDTO> Artists { get; set; } = new List<ArtistDTO>();
+
+        public AlbumDTO() { }
+
+        public AlbumDTO(AddAlbum album)
+        {
+            Patch(album);
+        }
+
+        public void Patch(AddAlbum album)
+        {
+            Title = album.Title;
+            Type = album.Type;
+            ReleasedAt = album.ReleasedAt;
+        }
     }
 }

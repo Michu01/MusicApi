@@ -16,15 +16,19 @@ namespace MusicApi.Authentication
     {
         private readonly MusicDbContext dbContext;
 
+        private readonly UserManager<UserDTO> userManager;
+
         public ApiKeyAuthenticationHandler(
             IOptionsMonitor<AuthenticationSchemeOptions> options, 
             ILoggerFactory logger, 
             UrlEncoder encoder, 
             ISystemClock clock,
-            MusicDbContext dbContext) 
+            MusicDbContext dbContext,
+            UserManager<UserDTO> userManager) 
             : base(options, logger, encoder, clock)
         {
             this.dbContext = dbContext;
+            this.userManager = userManager;
         }
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -39,12 +43,12 @@ namespace MusicApi.Authentication
                 return AuthenticateResult.Fail("Invalid key");
             }
 
-            AuthenticationTicket ticket = CreateTicket(user);
+            AuthenticationTicket ticket = await CreateTicket(user);
 
             return AuthenticateResult.Success(ticket);
         }
 
-        private AuthenticationTicket CreateTicket(UserDTO user)
+        private async Task<AuthenticationTicket> CreateTicket(UserDTO user)
         {
             List<Claim> claims = new()
             {
@@ -55,6 +59,11 @@ namespace MusicApi.Authentication
             if (user.Email != null)
             {
                 claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            }
+
+            foreach (string role in await userManager.GetRolesAsync(user))
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
             ClaimsIdentity identity = new(claims, Scheme.Name);

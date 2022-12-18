@@ -8,16 +8,6 @@ namespace MusicApi.Models
 {
     public class Song
     {
-        public Song(SongDTO dto, ISongFileManager songFileManager)
-        {
-            Id = dto.Id;
-            Title = dto.Title;
-            AddedAt = dto.AddedAt;
-            AlbumId = dto.AlbumId;
-            ReleasedAt = dto.ReleasedAt;
-            Duration = songFileManager.GetDuration(dto.Id)?.ToString();
-        }
-
         public Guid Id { get; set; }
 
         public string? Title { get; set; }
@@ -29,5 +19,15 @@ namespace MusicApi.Models
         public Guid? AlbumId { get; set; }
 
         public string? Duration { get; set; }
+
+        public Song(SongDTO dto, ISongFileManager songFileManager)
+        {
+            Id = dto.Id;
+            Title = dto.Title;
+            AddedAt = dto.AddedAt;
+            AlbumId = dto.AlbumId;
+            ReleasedAt = dto.ReleasedAt;
+            Duration = songFileManager.GetDuration(dto.Id)?.ToString();
+        }
     }
 }

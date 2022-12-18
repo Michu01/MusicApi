@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="StaticFiles\Songs\" />
+    <Folder Include="wwwroot\images\albumCovers\" />
   </ItemGroup>
 
 </Project>

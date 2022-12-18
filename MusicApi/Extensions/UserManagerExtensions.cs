@@ -2,14 +2,20 @@
 
 using Microsoft.AspNetCore.Identity;
 
+using MusicApi.DTOs;
+
 namespace MusicApi.Extensions
 {
     public static class UserManagerExtensions
     {
-        public static Task<TUser> FindByIdAsync<TUser>(this UserManager<TUser> userManager, ClaimsPrincipal user)
-            where TUser : class
+        public static Task<UserDTO> FindByIdAsync(this UserManager<UserDTO> userManager, ClaimsPrincipal user)
         {
             return userManager.FindByIdAsync(user.FindFirstValue(ClaimTypes.NameIdentifier));
+        }
+
+        public static Task<UserDTO> FindByIdAsync(this UserManager<UserDTO> userManager, Guid id)
+        {
+            return userManager.FindByIdAsync(id.ToString());
         }
     }
 }

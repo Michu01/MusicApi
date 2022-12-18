@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -9,6 +11,12 @@ using MusicApi.DTOs;
 using MusicApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options => options.AddDefaultPolicy(new CorsPolicyBuilder()
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowAnyOrigin()
+    .Build()));
 
 // Add services to the container.
 
@@ -48,6 +56,7 @@ builder.Services.AddIdentityCore<UserDTO>(options =>
     {
         options.Password.RequiredLength = 8;
     })
+    .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<MusicDbContext>();
 
 builder.Services.AddAuthentication(ApiKeyDefaults.AuthenticationScheme)
@@ -56,7 +65,12 @@ builder.Services.AddAuthentication(ApiKeyDefaults.AuthenticationScheme)
 builder.Services.AddScoped<IApiKeyService, ApiKeyService>();
 builder.Services.AddSingleton<ISongFileManager, SongFileManager>();
 
+builder.Services.AddScoped<AuthenticationSeedData>();
+
 var app = builder.Build();
+
+IServiceScope scope = app.Services.CreateScope();
+await scope.ServiceProvider.GetRequiredService<AuthenticationSeedData>().Initialize();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -64,6 +78,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 using MusicApi.DTOs;
 using MusicApi.Extensions;
@@ -51,7 +52,6 @@ namespace MusicApi.DbContexts
         public MusicDbContext(DbContextOptions<MusicDbContext> contextOptions)
             : base(contextOptions)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

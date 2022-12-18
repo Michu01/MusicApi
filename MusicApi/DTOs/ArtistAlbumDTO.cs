@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text.Json.Serialization;
+
+using Microsoft.EntityFrameworkCore;
+
+using MusicApi.Models;
 
 namespace MusicApi.DTOs
 {
@@ -7,10 +11,20 @@ namespace MusicApi.DTOs
     {
         public Guid ArtistId { get; set; }
 
+        [JsonIgnore]
         public virtual ArtistDTO? Artist { get; set; }
 
         public Guid AlbumId { get; set; }
 
+        [JsonIgnore]
         public virtual AlbumDTO? Album { get; set; }
+
+        public ArtistAlbumDTO() { }
+
+        public ArtistAlbumDTO(ArtistAlbum artistAlbum)
+        {
+            ArtistId = artistAlbum.ArtistId;
+            AlbumId = artistAlbum.AlbumId;
+        }
     }
 }
