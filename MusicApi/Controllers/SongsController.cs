@@ -119,6 +119,79 @@ namespace MusicApi.Controllers
             songFileManager.Delete(id);
 
             return NoContent();
-        } 
+        }
+
+        [HttpGet("{id}/Album")]
+        public async Task<ActionResult<Album>> GetAlbum(Guid id)
+        {
+            if (await dbContext.Songs.FindAsync(id) is not SongDTO songDTO)
+            {
+                return NotFound();
+            }
+
+            await dbContext.Entry(songDTO).Reference(s => s.Album).LoadAsync();
+
+            Album? album = songDTO.Album is null ? null : new(songDTO.Album);
+
+            return Ok(album);
+        }
+
+        [HttpGet("{id}/Genres")]
+        public async Task<ActionResult<IEnumerable<Genre>>> GetGenres(Guid id)
+        {
+            if (await dbContext.Songs.FindAsync(id) is not SongDTO songDTO)
+            {
+                return NotFound();
+            }
+
+            IEnumerable<Genre> genres = dbContext.EntryGenres
+                .Where(e => e.EntryType == GenreEntryType.Song)
+                .Where(e => e.EntryId == id)
+                .Join(dbContext.Genres, e => e.GenreId, e => e.Id, (e1, e2) => e2)
+                .Select(g => new Genre(g));
+
+            return Ok(genres);
+        }
+
+        [HttpGet("{id}/Artists")]
+        public async Task<ActionResult<IEnumerable<Artist>>> GetArtists(Guid id)
+        {
+            if (await dbContext.Songs.FindAsync(id) is not SongDTO songDTO)
+            {
+                return NotFound();
+            }
+
+            await dbContext.Entry(songDTO).Collection(a => a.Artists).LoadAsync();
+
+            IEnumerable<Artist> artists = songDTO.Artists.Select(a => new Artist(a));
+
+            return Ok(artists);
+        }
+
+        [HttpPost("{id}/ToggleFavourite")]
+        [Authorize]
+        public async Task<IActionResult> ToggleFavourite(Guid id)
+        {
+            if (await dbContext.Songs.AnyAsync(s => s.Id == id))
+            {
+                return NotFound();
+            }
+
+            Guid userId = User.GetId();
+
+            if (await dbContext.UserFavouriteEntries.FindAsync(userId, id, FavouriteEntryType.Song) is UserFavouriteEntryDTO userFavouriteEntry)
+            {
+                dbContext.UserFavouriteEntries.Remove(userFavouriteEntry);
+            }
+            else
+            {
+                userFavouriteEntry = new() { UserId = userId, EntryId = id, EntryType = FavouriteEntryType.Song };
+                dbContext.UserFavouriteEntries.Add(userFavouriteEntry);
+            }
+
+            await dbContext.SaveChangesAsync();
+
+            return CreatedAtAction(null, userFavouriteEntry);
+        }
     }
 }

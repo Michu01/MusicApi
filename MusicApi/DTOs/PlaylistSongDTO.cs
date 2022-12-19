@@ -3,6 +3,8 @@ using System.Text.Json.Serialization;
 
 using Microsoft.EntityFrameworkCore;
 
+using MusicApi.Models;
+
 namespace MusicApi.DTOs
 {
     [PrimaryKey(nameof(PlaylistId), nameof(SongId))]
@@ -19,5 +21,13 @@ namespace MusicApi.DTOs
         public virtual SongDTO? Song { get; set; }
 
         public DateTime AddedAt { get; set; }
+
+        public PlaylistSongDTO() { }
+
+        public PlaylistSongDTO(PlaylistSong playlistSong)
+        {
+            PlaylistId = playlistSong.PlaylistId;
+            SongId = playlistSong.SongId;
+        }
     }
 }

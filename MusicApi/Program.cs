@@ -63,7 +63,11 @@ builder.Services.AddAuthentication(ApiKeyDefaults.AuthenticationScheme)
     .AddScheme<AuthenticationSchemeOptions, ApiKeyAuthenticationHandler>(ApiKeyDefaults.AuthenticationScheme, null);
 
 builder.Services.AddScoped<IApiKeyService, ApiKeyService>();
+
 builder.Services.AddSingleton<ISongFileManager, SongFileManager>();
+
+builder.Services.AddSingleton<AlbumCoverFileManager>();
+builder.Services.AddSingleton<PlaylistCoverFileManager>();
 
 builder.Services.AddScoped<AuthenticationSeedData>();
 
@@ -80,6 +84,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors();
+
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 

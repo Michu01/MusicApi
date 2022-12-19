@@ -1,45 +1,12 @@
-﻿using Microsoft.AspNetCore.StaticFiles;
-
-using MusicApi.DTOs;
-
-using NAudio.Wave;
+﻿using NAudio.Wave;
 
 namespace MusicApi.Services
 {
-    public class SongFileManager : ISongFileManager
+    public class SongFileManager : FileManager, ISongFileManager
     {
-        private readonly FileExtensionContentTypeProvider typeProvider = new();
+        protected override string RootRelativeFolderPath => "Songs";
 
-        public void Delete(Guid id)
-        {
-            if (Find(id) is string filename)
-            {
-                Directory.Delete(filename);
-            }
-        }
-
-        public string? Find(Guid id)
-        {   
-            string[] files = Directory.GetFiles(@"StaticFiles\Songs", $"{id}.*");
-
-            if (files.Length == 0)
-            {
-                return null;
-            }
-
-            return files[0];
-        }
-
-        public (FileStream, string) Get(string filename)
-        {
-            FileStream file = File.OpenRead(filename);
-
-            string extension = Path.GetExtension(filename);
-
-            string contentType = typeProvider.Mappings[extension];
-
-            return (file, contentType);
-        }
+        protected override string RootPath => "StaticFiles";
 
         public TimeSpan? GetDuration(Guid id)
         {
@@ -51,15 +18,6 @@ namespace MusicApi.Services
             AudioFileReader audioFileReader = new(filename);
 
             return audioFileReader.TotalTime;
-        }
-
-        public async Task Save(Guid id, IFormFile formFile)
-        {
-            string path = $"StaticFiles/Songs/{id}{Path.GetExtension(formFile.FileName)}";
-
-            using FileStream file = File.OpenWrite(path);
-
-            await formFile.CopyToAsync(file);
         }
     }
 }

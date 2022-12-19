@@ -175,7 +175,7 @@ namespace MusicApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Albums");
+                    b.ToTable("Albums", (string)null);
                 });
 
             modelBuilder.Entity("MusicApi.DTOs.ArtistAlbumDTO", b =>
@@ -190,7 +190,7 @@ namespace MusicApi.Migrations
 
                     b.HasIndex("AlbumId");
 
-                    b.ToTable("ArtistAlbums");
+                    b.ToTable("ArtistAlbums", (string)null);
                 });
 
             modelBuilder.Entity("MusicApi.DTOs.ArtistDTO", b =>
@@ -209,7 +209,7 @@ namespace MusicApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Artists");
+                    b.ToTable("Artists", (string)null);
                 });
 
             modelBuilder.Entity("MusicApi.DTOs.ArtistSongDTO", b =>
@@ -224,7 +224,7 @@ namespace MusicApi.Migrations
 
                     b.HasIndex("SongId");
 
-                    b.ToTable("ArtistSongs");
+                    b.ToTable("ArtistSongs", (string)null);
                 });
 
             modelBuilder.Entity("MusicApi.DTOs.EntryGenreDTO", b =>
@@ -242,7 +242,7 @@ namespace MusicApi.Migrations
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("EntryGenres");
+                    b.ToTable("EntryGenres", (string)null);
                 });
 
             modelBuilder.Entity("MusicApi.DTOs.GenreDTO", b =>
@@ -261,7 +261,7 @@ namespace MusicApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
                 });
 
             modelBuilder.Entity("MusicApi.DTOs.PlaylistDTO", b =>
@@ -292,7 +292,7 @@ namespace MusicApi.Migrations
 
                     b.HasIndex("CreatorId");
 
-                    b.ToTable("Playlists");
+                    b.ToTable("Playlists", (string)null);
                 });
 
             modelBuilder.Entity("MusicApi.DTOs.PlaylistSongDTO", b =>
@@ -310,7 +310,7 @@ namespace MusicApi.Migrations
 
                     b.HasIndex("SongId");
 
-                    b.ToTable("PlaylistSongs");
+                    b.ToTable("PlaylistSongs", (string)null);
                 });
 
             modelBuilder.Entity("MusicApi.DTOs.SongDTO", b =>
@@ -337,7 +337,7 @@ namespace MusicApi.Migrations
 
                     b.HasIndex("AlbumId");
 
-                    b.ToTable("Songs");
+                    b.ToTable("Songs", (string)null);
                 });
 
             modelBuilder.Entity("MusicApi.DTOs.UserDTO", b =>
@@ -430,7 +430,7 @@ namespace MusicApi.Migrations
 
                     b.HasKey("UserId", "EntryId", "EntryType");
 
-                    b.ToTable("UserFavouriteEntries");
+                    b.ToTable("UserFavouriteEntries", (string)null);
                 });
 
             modelBuilder.Entity("MusicApi.DTOs.UserFollowDTO", b =>
@@ -445,7 +445,7 @@ namespace MusicApi.Migrations
 
                     b.HasIndex("FollowedId");
 
-                    b.ToTable("UserFollows");
+                    b.ToTable("UserFollows", (string)null);
                 });
 
             modelBuilder.Entity("MusicApi.DTOs.UserPlayedEntryDTO", b =>
@@ -464,7 +464,7 @@ namespace MusicApi.Migrations
 
                     b.HasKey("UserId", "EntryId", "EntryType", "PlayedAt");
 
-                    b.ToTable("UserPlayedEntries");
+                    b.ToTable("UserPlayedEntries", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
